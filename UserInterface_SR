@@ -1,0 +1,215 @@
+// --== CS400 File Header Information ==--
+// Name: Sushanth Rao
+// Email: srao32@wisc.edu
+// Team: CB
+// TA: Yeping Wang
+// Lecturer: Florian Heimerl
+// Notes to Grader: <optional extra notes>
+
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+public class UserInterface {
+    private static int mainMenu(Scanner scnr) {
+        // Welcome message
+        System.out.println("Welcome to this voter registration database! Here, you can\n" +
+                "add and get voters and even see how many voters are registered.\n");
+        return menuOptions(scnr);
+    }
+
+    private static int menuOptions(Scanner scnr) {
+        // Prompt user with menu options. Check input and prompt again if the input is not valid
+        boolean done = false; // Flag for while loop
+        String menuState = "Options"; // switch variable
+        int menuChoice = 0; // Output variable
+        // Keep prompting for input until the input is valid
+        while(!done) {
+            switch (menuState) {
+                case "Options":
+                    // Print menu options
+                    System.out.println("Please type the number corresponding to the option you would\n" +
+                            "like to select:");
+                    System.out.println("1) Add voter to database");
+                    System.out.println("2) Get voter by birth date");
+                    System.out.println("3) Get voter database size");
+                    System.out.println("4) Exit program");
+
+                    // Check for valid input
+                    try {
+                        menuChoice = scnr.nextInt();
+                        if(menuChoice < 1 || menuChoice > 4)
+                            menuState = "Invalid Input";
+                        else done = true; // Input is valid, EXIT LOOP
+                    }
+                    catch (InputMismatchException ime) {
+                        menuState = "Invalid Input";
+                    }
+                    catch (NoSuchElementException nsee) {
+                        menuState = "Invalid Input";
+                    }
+                    break;
+                case "Invalid Input":
+                    // Give user an error message an prompt again for input
+                    System.out.println("Please enter a valid number in the range 1-4");
+                    menuState = "Options";
+                    break;
+            }
+        }
+        return menuChoice;
+    }
+
+    private static Object[] addVoter(Scanner scnr) {
+        // Output variables
+        int birthday = -1;
+        String name = "";
+        char party = '0';
+
+        System.out.println("Enter your information below:");
+        boolean done = false; // Flag for while loop
+        String promptState = "Birthdate"; // switch variable
+        // Keep prompting for input until the input is valid
+        while(!done) {
+            switch (promptState) {
+                case "Birthdate":
+                    // Prompt for birthdate
+                    birthday = getBirthdate(scnr);
+                    // Change state if the input was valid
+                    if (birthday != -1)
+                        promptState = "Name"; // input valid, go to next state
+                    break;
+                case "Name":
+                    // Prompt user for name
+                    System.out.println("Enter your name:");
+                    try {
+                        name = scnr.nextLine();
+                        promptState = "Party"; // Change state if no exception was thrown
+                    }
+                    catch (NoSuchElementException nsee) {
+                        System.out.println("The name entered was not valid");
+                    }
+                    break;
+                case "Party":
+                    party = getParty(scnr);
+                    // If the input was valid, exit out of the loop
+                    if(party != '0')
+                        done = true;
+                    break;
+            }
+        }
+
+        // Return the voter fields
+        return new Object[]{birthday, name, party};
+    }
+
+    private static int getBirthdate(Scanner scnr) {
+        // Prompt user for birth date
+        System.out.println("Please enter the birth date as an 8 digit String in MMDDYYYY.\n" +
+                "For example the birthday January 1, 2001 would be entered as 01012001");
+        // Parse input
+        int birthday; // Output variable
+        try {
+            birthday = scnr.nextInt();
+            // Get the month, year, and date of the birthday for validation
+            int month = birthday/1000000;
+            int day = (birthday - month)/10000;
+            int year = birthday - month - day;
+            // Make sure all values are withing the appropriate range
+            if (month<1 || month>12 || day<1 || day>31 || year<0 || year>9999)
+                throw new InputMismatchException(); // input was invalid
+            else return birthday;
+        }
+        catch(InputMismatchException ime) {
+            System.out.println("Invalid birthday was entered");
+            return -1;
+        }
+        catch (NoSuchElementException nsee) {
+            System.out.println("Invalid birthday was entered");
+            return -1;
+        }
+    }
+
+    private static char getParty(Scanner scnr) {
+        char party; // Output variable
+
+        System.out.println("Enter the party you area affiliated with using a single character.\n" +
+                "Options are Democrat(D), Republican(R), or Independent(I)");
+        // Get party input
+        try {
+            party = scnr.nextLine().trim().toUpperCase().charAt(0);
+            // If the character doesn't match any of the options, it is invalid
+            if(party != 'D' && party != 'R' && party != 'I')
+                throw new NoSuchElementException();
+            else return party;
+        }
+        catch (NoSuchElementException nsee) {
+            System.out.println("The party character you entered was not valid");
+            return '0'; // Input was invalid, so return '0'
+        }
+    }
+
+    private static int getVoter(Scanner scnr) {
+        System.out.println("Get a voter by entering their birthday");
+
+        boolean done = false; // Flag for while loop
+        int birthday = -1;
+        // Prompt for birthday until a valid input is received
+        while(!done) {
+            birthday = getBirthdate(scnr);
+            if(birthday != -1)
+                done = true; // input was valid, so exit loop
+        }
+        return birthday;
+    }
+
+    public static void main(String[] args) {
+        VoterDB vdb = new VoterDB();
+
+        Scanner scnr = new Scanner(System.in);
+        int menuOption = 0; // switch variable
+        boolean done = false; // Flag for while loop
+        // Keep executing cases here until the program is done
+        while(!done) {
+            // Decide the next step based on the user's choice
+            switch (menuOption) {
+                case 0:
+                    // WELCOME USER MENU
+                    // Display user menu and change menuOption to the next state
+                    menuOption = mainMenu(scnr);
+                    break;
+                case 1:
+                    // PROMPT FOR ADDING VOTER
+                    Object[] voterFields = addVoter(scnr);
+                    if(!vdb.addVoter((int) voterFields[0], (String) voterFields[1], (char) voterFields[2]))
+                        System.out.println("Sorry we couldn't add you to the database. Please try again.");
+                    else
+                        System.out.println("Thanks for adding a voter!");
+                    menuOption = 0; // Go back to main menu
+                    break;
+                case 2:
+                    // PROMPT FOR GETTING VOTER
+                    Voter voter = vdb.getVoter(getVoter(scnr));
+                    if(voter != null) {
+                        System.out.println("Here is the information for voter "+ voter.getName());
+                        System.out.println("\tBirthday: "+ voter.getBirthday());
+                        System.out.println("\tName: "+ voter.getName());
+                        System.out.println("\tParty: "+ voter.getParty());
+                    }
+                    else
+                        System.out.println("Sorry we couldn't get that voter");
+                    menuOption = 0; // Go back to main menu
+                    break;
+                case 3:
+                    // DISPLAY DATABASE SIZE
+                    System.out.println("There are "+vdb.voterDBSize()+" in this voter database");
+                    menuOption = 0; // Go back to main menu
+                    break;
+                case 4:
+                    // EXIT
+                    System.out.println("Thanks for using this voter database!");
+                    done = true; // Program is done, EXIT LOOP
+                    break;
+            }
+        }
+    }
+}
