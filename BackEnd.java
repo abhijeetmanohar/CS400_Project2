@@ -73,7 +73,7 @@ public class BackEnd {
 			if(currentNode.data.compareTo(new Voter(birthdate)) == 0) {
 				foundVoter = currentNode.data;
 			}
-			else if(currentNode.data.compareTo(new Voter(birthdate)) < 0) {
+			else if(currentNode.data.compareTo(new Voter(birthdate)) > 0) {
 				//left subtree
 				currentNode = currentNode.leftChild;
 			}else {
