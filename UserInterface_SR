@@ -104,16 +104,16 @@ public class UserInterface {
 
     private static int getBirthdate(Scanner scnr) {
         // Prompt user for birth date
-        System.out.println("Please enter the birth date as an 8 digit String in MMDDYYYY.\n" +
-                "For example the birthday January 1, 2001 would be entered as 01012001");
+        System.out.println("Please enter the birth date as an 8 digit String in YYYYMMDD.\n" +
+                "For example the birthday March 2, 2001 would be entered as 20010302");
         // Parse input
         int birthday; // Output variable
         try {
             birthday = scnr.nextInt();
-            // Get the month, year, and date of the birthday for validation
-            int month = birthday/1000000;
-            int day = (birthday - month)/10000;
-            int year = birthday - month - day;
+            // Get the year, month, and date of the birthday for validation
+            int year = birthday/10000;
+            int month = (birthday - year)/100;
+            int day = birthday - month - year;
             // Make sure all values are withing the appropriate range
             if (month<1 || month>12 || day<1 || day>31 || year<0 || year>9999)
                 throw new InputMismatchException(); // input was invalid
