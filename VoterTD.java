@@ -19,7 +19,7 @@ import java.util.Date;
 public class VoterTD implements Comparable<VoterTD>{
 	
 	private String name; 			//should be last name, first name
-	private Date birthDate;		//ideally should be submitted as MM/DD/YYYY
+	private Date birthDate;		//ideally should be submitted as YYYY/MM/DD
 	private char party;				//'D' for democrat, 'R' for republican.
 	
 	/**
