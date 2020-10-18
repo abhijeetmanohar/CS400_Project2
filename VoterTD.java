@@ -29,7 +29,7 @@ public class VoterTD implements Comparable<VoterTD>{
 	public VoterTD(Date birthDate) {
 		this.birthDate = birthDate;
 		name = null;
-		party = '0';
+		party = 'n';
 	}
 	
 	/**
@@ -44,15 +44,17 @@ public class VoterTD implements Comparable<VoterTD>{
 		this.birthDate = birthDate;
 		
 		//submits a capitalized version of the name.
-		Scanner scannedName = new Scanner(name);
-		String capitalizedName = "";
-		String cur = "";
-		while (scannedName.hasNext()) {
-			cur += scannedName.next();
-			capitalizedName += Character.toUpperCase(cur.charAt(0));
+		String nName = "";
+		nName += Character.toUpperCase(name.charAt(0));
+		for (int i = 1; i < name.length(); i++) {
+			if (name.charAt(i-1) == ' ') {
+				nName += Character.toUpperCase(name.charAt(i));
+			}
+			else {
+				nName += name.charAt(i);
+			}
 		}
-		this.name = capitalizedName;
-		scannedName.close();
+		this.name = nName.substring(0, nName.length());
 		
 		this.party = Character.toUpperCase(party);
 	}
@@ -70,17 +72,19 @@ public class VoterTD implements Comparable<VoterTD>{
 		this.birthDate = birthDate;
 		
 		//Submits a capitalized version of the name.
-		String nName = lName + " " + fName;
-		Scanner scannedName = new Scanner(nName);
-		String capitalizedName = "";
-		String cur = "";
-		while (scannedName.hasNext()) {
-			cur += scannedName.next();
-			capitalizedName += Character.toUpperCase(cur.charAt(0));
+		String cName = lName + " " + fName;
+		String nName = "";
+		nName += Character.toUpperCase(cName.charAt(0));
+		for (int i = 1; i < cName.length(); i++) {
+			if (cName.charAt(i-1) == ' ') {
+				nName += Character.toUpperCase(cName.charAt(i));
+			}
+			else {
+				nName += cName.charAt(i);
+			}
 		}
-		this.name = capitalizedName;
-		scannedName.close();
-		
+		this.name = nName.substring(0, nName.length());
+	
 		this.party = Character.toUpperCase(party);
 	}
 	
@@ -116,7 +120,7 @@ public class VoterTD implements Comparable<VoterTD>{
 	 * 
 	 * @return a string composing of the voter's name, date of birth, and party.
 	 */
-	@Override
+	
 	public String toString() {
 		String rString;
 		rString = "Name: " + name + " Birth Date: " +  birthDate + " Party: " + party;
@@ -133,10 +137,10 @@ public class VoterTD implements Comparable<VoterTD>{
 	 * @return an integer relating if one voter is older or younger than the other.
 	 */
 	public int compareTo(VoterTD v) {
-		if (birthDate.compareTo(v.getBirthday()) > 0) {
+		if (this.getBirthday().compareTo(v.getBirthday()) > 0) {
 			return 1;
 		}
-		else if (birthDate.compareTo(v.getBirthday()) < 0) {
+		else if (this.getBirthday().compareTo(v.getBirthday()) < 0) {
 			return -1;
 		}
 		return 0;
