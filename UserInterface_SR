@@ -38,7 +38,6 @@ public class UserInterface {
                     // Check for valid input
                     try {
                         menuChoice = scnr.nextInt();
-                        scnr.nextLine();
                         if(menuChoice < 1 || menuChoice > 4)
                             menuState = "Invalid Input";
                         else done = true; // Input is valid, EXIT LOOP
@@ -49,6 +48,7 @@ public class UserInterface {
                     catch (NoSuchElementException nsee) {
                         menuState = "Invalid Input";
                     }
+                    scnr.nextLine(); // Advance past the end of the line
                     break;
                 case "Invalid Input":
                     // Give user an error message an prompt again for input
@@ -111,7 +111,6 @@ public class UserInterface {
         int birthday; // Output variable
         try {
             birthday = scnr.nextInt();
-            scnr.nextLine(); // Advance past current line
             // Get the year, month, and date of the birthday for validation
             int year = birthday/10000;
             int month = (birthday%10000)/100;
@@ -119,16 +118,17 @@ public class UserInterface {
             // Make sure all values are withing the appropriate range
             if (month<1 || month>12 || day<1 || day>31 || year<0 || year>9999)
                 throw new InputMismatchException(); // input was invalid
-            else return birthday;
         }
         catch(InputMismatchException ime) {
             System.out.println("Invalid birthday was entered");
-            return -1;
+            birthday = -1;
         }
         catch (NoSuchElementException nsee) {
             System.out.println("Invalid birthday was entered");
-            return -1;
+            birthday = -1;
         }
+        scnr.nextLine();
+        return birthday;
     }
 
     private static char getParty(Scanner scnr) {
