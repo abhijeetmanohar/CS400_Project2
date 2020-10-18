@@ -38,6 +38,7 @@ public class UserInterface {
                     // Check for valid input
                     try {
                         menuChoice = scnr.nextInt();
+                        scnr.nextLine();
                         if(menuChoice < 1 || menuChoice > 4)
                             menuState = "Invalid Input";
                         else done = true; // Input is valid, EXIT LOOP
@@ -110,10 +111,11 @@ public class UserInterface {
         int birthday; // Output variable
         try {
             birthday = scnr.nextInt();
+            scnr.nextLine(); // Advance past current line
             // Get the year, month, and date of the birthday for validation
             int year = birthday/10000;
-            int month = (birthday - year)/100;
-            int day = birthday - month - year;
+            int month = (birthday%10000)/100;
+            int day = birthday%100;
             // Make sure all values are withing the appropriate range
             if (month<1 || month>12 || day<1 || day>31 || year<0 || year>9999)
                 throw new InputMismatchException(); // input was invalid
