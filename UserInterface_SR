@@ -148,6 +148,10 @@ public class UserInterface {
             System.out.println("The party character you entered was not valid");
             return '0'; // Input was invalid, so return '0'
         }
+        catch (StringIndexOutOfBoundsException e) {
+            System.out.println("The party character you entered was not valid");
+            return '0'; // Input was invalid, so return '0'
+        }
     }
 
     private static int getVoter(Scanner scnr) {
@@ -165,7 +169,7 @@ public class UserInterface {
     }
 
     public static void main(String[] args) {
-        VoterDB vdb = new VoterDB();
+        BackEnd backEnd = new BackEnd();
 
         Scanner scnr = new Scanner(System.in);
         int menuOption = 0; // switch variable
@@ -182,7 +186,7 @@ public class UserInterface {
                 case 1:
                     // PROMPT FOR ADDING VOTER
                     Object[] voterFields = addVoter(scnr);
-                    if(!vdb.addVoter((int) voterFields[0], (String) voterFields[1], (char) voterFields[2]))
+                    if(!backEnd.addVoter((int) voterFields[0], (String) voterFields[1], (char) voterFields[2]))
                         System.out.println("Sorry we couldn't add you to the database. Please try again.");
                     else
                         System.out.println("Thanks for adding a voter!");
@@ -190,7 +194,7 @@ public class UserInterface {
                     break;
                 case 2:
                     // PROMPT FOR GETTING VOTER
-                    Voter voter = vdb.getVoter(getVoter(scnr));
+                    Voter voter = backEnd.getVoter(getVoter(scnr));
                     if(voter != null) {
                         System.out.println("Here is the information for voter "+ voter.getName());
                         System.out.println("\tBirthday: "+ voter.getBirthday());
@@ -203,7 +207,7 @@ public class UserInterface {
                     break;
                 case 3:
                     // DISPLAY DATABASE SIZE
-                    System.out.println("There are "+vdb.voterDBSize()+" in this voter database");
+                    System.out.println("There are "+backEnd.voterDBSize()+" in this voter database");
                     menuOption = 0; // Go back to main menu
                     break;
                 case 4:
