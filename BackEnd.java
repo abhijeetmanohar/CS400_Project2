@@ -9,7 +9,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
 @SuppressWarnings("unused")
 public class BackEnd {
 	//Create an instance of RBT
@@ -67,9 +66,11 @@ public class BackEnd {
 		//2. Traverse root.
 		//3. Traverse right.
 		
+
 		Voter foundVoter = null;
 		RedBlackTree.Node<Voter> currentNode = root;
-		while(currentNode != null) {
+		while(currentNode != null && foundVoter == null) {
+		//	System.out.println("current node: "+ currentNode.data.getBirthday());
 			if(currentNode.data.compareTo(new Voter(birthdate)) == 0) {
 				foundVoter = currentNode.data;
 			}
@@ -81,9 +82,10 @@ public class BackEnd {
 				currentNode = currentNode.rightChild;
 			}
 		}
-		return foundVoter;	
+		//System.out.println("foundVoter: "+foundVoter);
+		return foundVoter;
+		
 	}
-	
 
 
 	public int voterDBSize() {
