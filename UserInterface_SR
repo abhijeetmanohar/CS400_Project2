@@ -197,9 +197,7 @@ public class UserInterface {
                     Voter voter = backEnd.getVoter(getVoter(scnr));
                     if(voter != null) {
                         System.out.println("Here is the information for voter "+ voter.getName());
-                        System.out.println("\tBirthday: "+ voter.getBirthday());
-                        System.out.println("\tName: "+ voter.getName());
-                        System.out.println("\tParty: "+ voter.getParty());
+                        System.out.println(voter);
                     }
                     else
                         System.out.println("Sorry we couldn't get that voter");
