@@ -76,7 +76,7 @@ class VoterDatabaseTestSuite {
       fail("'voter' should have been returned, but was not.");
     }
 
-    if (testBackEnd.getVoter(19680615) == null) {
+    if (!(testBackEnd.getVoter(19680615) == null)) {
       fail("This voter does not exist, and thus cannot be retrieved from the database.");
     }
 
