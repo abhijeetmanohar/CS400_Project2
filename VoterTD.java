@@ -6,7 +6,6 @@
 // Lecturer: Florian Heimerl
 // Notes to Grader: <none>
 
-import java.util.Scanner;
 import java.util.Date;
 
 /**
@@ -20,7 +19,7 @@ public class VoterTD implements Comparable<VoterTD>{
 	
 	private String name; 			//should be last name, first name
 	private Date birthDate;		//ideally should be submitted as YYYY/MM/DD
-	private char party;				//'D' for democrat, 'R' for republican.
+	private char party;				//'D' for democrat, 'R' for republican, 'I' for independant
 	
 	/**
 	 * Class constructor
@@ -111,8 +110,20 @@ public class VoterTD implements Comparable<VoterTD>{
 	 * 
 	 * @return the character that was submitted as the voter's party.
 	 */
-	public char getParty() {
-		return party;
+	public String getParty() {
+		String partyName = "";
+		switch(party) {
+			case 'D':
+				partyName = "Democrat";
+				break;
+			case 'R':
+				partyName = "Republican";
+				break;
+			case 'I':
+				partyName = "Independant";
+				break;
+		}
+		return partyName;
 	}
 	
 	/**
@@ -123,7 +134,7 @@ public class VoterTD implements Comparable<VoterTD>{
 	
 	public String toString() {
 		String rString;
-		rString = "Name: " + name + " Birth Date: " +  birthDate + " Party: " + party;
+		rString = "Name: " + name + " Birth Date: " +  birthDate + " Party: " + getParty();
 		return rString;
 	}
 	
