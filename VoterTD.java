@@ -28,7 +28,7 @@ public class VoterTD implements Comparable<VoterTD>{
 	public VoterTD(Date birthDate) {
 		this.birthDate = birthDate;
 		name = null;
-		party = 'n';
+		party = 'p';
 	}
 	
 	/**
@@ -106,11 +106,11 @@ public class VoterTD implements Comparable<VoterTD>{
 	}
 	
 	/**
-	 * Retrieves and returns a voter's political party.
+	 * Retrieves and returns the full name of a voter's political party.
 	 * 
-	 * @return the character that was submitted as the voter's party.
+	 * @return a string that is associated with the voter's party.
 	 */
-	public String getParty() {
+	public String getPartyName() {
 		String partyName = "";
 		switch(party) {
 			case 'D':
@@ -127,6 +127,15 @@ public class VoterTD implements Comparable<VoterTD>{
 	}
 	
 	/**
+	 * Retrieves and returns the full name of a voter's political party.
+	 * 
+	 * @return the character that was submitted as the voter's party.
+	 */
+	public char getParty() {
+		return party;
+	}
+	
+	/**
 	 * Returns a compiled list of relevant voter data.
 	 * 
 	 * @return a string composing of the voter's name, date of birth, and party.
@@ -134,7 +143,7 @@ public class VoterTD implements Comparable<VoterTD>{
 	
 	public String toString() {
 		String rString;
-		rString = "Name: " + name + " Birth Date: " +  birthDate + " Party: " + getParty();
+		rString = "\tName: " + name + "\n\tBirth Date: " +  birthDate + "\n\tParty: " + getPartyName();
 		return rString;
 	}
 	
