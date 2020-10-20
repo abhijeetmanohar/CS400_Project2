@@ -1,0 +1,150 @@
+// --== CS400 File Header Information ==--
+// Name: Yiyang Jiang
+// Email: yjiang285@wisc.edu
+// Team: CB
+// TA: Yeping Wang
+// Lecturer: Florian Heimerl
+// Notes to Grader: <optional extra notes>
+
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+public class UserInterface {  
+  private static BackEnd backEnd;
+  
+  public UserInterface() {
+    backEnd = new BackEnd();
+    mainMenu();
+  }
+
+  private static void mainMenu() {
+    System.out.println("Welcome to this voter registration database! Here, you can\n"
+        + "add and get voters and see how many voters are registered.\n");
+    Options();
+  }
+
+  private static void Options() {
+    Scanner sc = new Scanner(System.in);
+    boolean test = true;
+    System.out.println("\nEnter the number to choose what to do.");
+    System.out.println("1) Add voter");
+    System.out.println("2) Get voter by birth date");
+    System.out.println("3) Get voter database size");
+    System.out.println("4) Exit");
+    int input = 0;
+    try {
+      input = sc.nextInt();
+      if (input < 1 || input > 4)
+        test = false;
+    } catch (InputMismatchException e) {
+      test = false;
+    } catch (NoSuchElementException e) {
+      test = false;
+    }
+    if (test) {
+      switch (input) {
+        case 1:
+          addVoter();
+          break;
+        case 2:
+          getVoter();
+          break;
+        case 3:
+          getSize();
+          break;
+        case 4:
+          mainMenu();
+      }
+    } else {
+      System.out.println("Please enter a valid number in the range 1-4");
+      Options();
+    }
+  }
+
+  public static void addVoter() {
+    int birthday = 0;
+    char party = 0;
+    Scanner sc = new Scanner(System.in);
+    System.out.println("\nPlease enter your information: ");
+    System.out.println("Enter your birthday as an 8 digit String in YYYYMMDD.: ");
+    try {
+      birthday = sc.nextInt();
+      int year = birthday / 10000;
+      int month = (birthday % 10000) / 100;
+      int day = birthday % 100;
+      if (month < 1 || month > 12 || day < 1 || day > 31 || year < 0 || year > 9999)
+        throw new InputMismatchException();
+    } catch (InputMismatchException e) {
+      System.out.println("Invalid birthday was entered");
+      addVoter();
+    } catch (NoSuchElementException e) {
+      System.out.println("Invalid birthday was entered");
+      addVoter();
+    }
+    
+    sc.nextLine();
+    System.out.println("\nEnter your name: ");
+    String name = sc.nextLine();
+
+    System.out.println("Choose your party by entering the character.\n"
+        + "Democrat(D), Republican(R), or Independent(I)");
+    try {
+      party = sc.nextLine().trim().toUpperCase().charAt(0);
+      if (party != 'D' && party != 'R' && party != 'I')
+        throw new NoSuchElementException();
+    } catch (NoSuchElementException nsee) {
+      System.out.println("The party character you entered was not valid");
+      addVoter();
+    } catch (StringIndexOutOfBoundsException e) {
+      System.out.println("The party character you entered was not valid");
+      addVoter();
+    }
+
+    if (backEnd.add(birthday, name, party)) {
+      System.out.println("Your information has been entered, thank you for your cooperation.");
+    } else {
+      System.out.println("Your information can't be entered at this time, sorry.");
+    }
+    Options();
+
+  }
+
+  private static void getVoter() {
+    int birthday = 0;
+    System.out.println("Get a voter by entering their birthday as an 8 digit String in YYYYMMDD.");
+    Scanner sc = new Scanner(System.in);
+    try {
+      birthday = sc.nextInt();
+      int year = birthday/10000;
+      int month = (birthday%10000)/100;
+      int day = birthday%100;
+      if (month<1 || month>12 || day<1 || day>31 || year<0 || year>9999)
+        throw new InputMismatchException(); 
+    }
+    catch(InputMismatchException e) {
+      System.out.println("Invalid birthday was entered");
+      getVoter();
+    }
+    catch (NoSuchElementException e) {
+      System.out.println("Invalid birthday was entered");
+      getVoter();
+    }
+    if (backEnd.get(birthday)!= null) {
+      System.out.println("The voter has been found. Name:" + backEnd.get(birthday).getName());
+    } else {
+      System.out.println("Sorry, the voter was not found. Please check your birthdat format");
+    }
+    Options();
+  }
+
+  private static void getSize() {
+    System.out.println("There are "+ backEnd.voterDBSize() + " voter already signed up.");
+    
+  }
+
+  public static void main(String[] args) {
+    UserInterface userInterface = new UserInterface();
+
+  }
+}
