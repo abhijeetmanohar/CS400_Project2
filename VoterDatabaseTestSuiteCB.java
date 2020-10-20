@@ -2,6 +2,7 @@
 // Name: Casey Boehlke
 // Email: cboehlke@wisc.edu
 // Team: CB
+// Role: Test Engineer
 // TA: Yeping
 // Lecturer: Florian Heimerl
 // Notes to Grader: None
