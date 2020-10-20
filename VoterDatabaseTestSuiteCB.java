@@ -49,7 +49,7 @@ class VoterDatabaseTestSuite {
       fail("The party returned and the party used to create the object did not match.");
     }
 
-    if (!(birthdayVoter.getBirthday().equals(createDate(20010825)))) {
+    if (!(birthdayVoter.getBirthday().equals(createDate(19680615)))) {
       fail("The birth date returned and the birth date used to create the pbject did not match.");
     }
 
@@ -72,7 +72,7 @@ class VoterDatabaseTestSuite {
     testBackEnd.addVoter(20010117, "Casey Boehlke", 'D');
 
 
-    if (!(testBackEnd.getVoter(20010117).equals(voter))) {
+    if (!(testBackEnd.getVoter(20010117).compareTo(voter) == 0)) {
       fail("'voter' should have been returned, but was not.");
     }
 
